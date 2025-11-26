@@ -201,7 +201,7 @@ class _TodoListPageState extends State<TodoListPage> {
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: kTextHeader,
+              color: Color(0xFF34C759),
             ),
           ),
         ],
