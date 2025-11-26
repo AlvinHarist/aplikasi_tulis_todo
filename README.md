@@ -1,6 +1,6 @@
-# aplikasi_tulis_todo
+# Tulis (To Do List)
 
-A new Flutter project.
+Aplikasi to-do list mobile
 
 ## Getting Started
 
