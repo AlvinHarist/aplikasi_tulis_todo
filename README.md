@@ -24,7 +24,7 @@ Aplikasi ini didesain sesuai dengan *mockup* Figma dengan nuansa warna Earthy & 
 
 | Halaman Utama (Kosong) | Form Tambah Tugas | Daftar Tugas |
 |:----------------------:|:-----------------:|:------------:|
-| ![Empty State](assets/screenshot_empty.png) | ![Form Input](assets/screenshot_form.png) | ![Task List](assets/screenshot_list.png) |
+| ![Empty State](assets/home.png) | ![Form Input](assets/isi.png) | ![Task List](assets/selesai.png) |
 
 > *Catatan: Screenshot di atas hanyalah placeholder. Silakan ganti dengan screenshot asli aplikasi Anda.*
 
