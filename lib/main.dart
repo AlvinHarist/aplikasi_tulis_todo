@@ -24,21 +24,20 @@ class MyApp extends StatelessWidget {
       title: 'Tulis App',
       theme: ThemeData(
         useMaterial3: true,
-        scaffoldBackgroundColor: kBackgroundColor, // Set background global
-        fontFamily: 'Poppins', // (Opsional) Jika ingin pakai font mirip desain
+        scaffoldBackgroundColor: kBackgroundColor,
+        fontFamily: 'Poppins',
         colorScheme: ColorScheme.fromSeed(
           seedColor: kPrimaryGreen,
           primary: kPrimaryGreen,
           surface: kBackgroundColor,
         ),
-        // Styling Checkbox global agar kotak dan hijau
         checkboxTheme: CheckboxThemeData(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
           fillColor: MaterialStateProperty.resolveWith((states) {
             if (states.contains(MaterialState.selected)) {
               return kPrimaryGreen;
             }
-            return null; // Transparan borders saat tidak dicentang
+            return null;
           }),
         ),
       ),
@@ -47,7 +46,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// --- MODEL DATA (TIDAK BERUBAH) ---
+// --- MODEL DATA ---
 class Todo {
   String title;
   String description;
@@ -91,7 +90,7 @@ class _TodoListPageState extends State<TodoListPage> {
     _loadData();
   }
 
-  // --- FUNGSI STORAGE & LOGIKA (TIDAK BANYAK BERUBAH) ---
+  // --- FUNGSI STORAGE & LOGIKA ---
   Future<void> _saveData() async {
     final prefs = await SharedPreferences.getInstance();
     final String encodedData = jsonEncode(todos.map((e) => e.toJson()).toList());
@@ -183,7 +182,34 @@ class _TodoListPageState extends State<TodoListPage> {
     );
   }
 
-  // --- UI: BOTTOM SHEET (REDESAIN SESUAI GAMBAR 2 & 5) ---
+  // --- UI: WIDGET TAMPILAN KOSONG (Sticky Notes) ---
+  // Dipisahkan agar kode utama lebih bersih
+  Widget _buildEmptyStateWidget() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(
+            'assets/notes.png',
+            width: 280,
+            fit: BoxFit.contain,
+          ),
+          const SizedBox(height: 20),
+          const Text(
+            'Ayo tulis\nkegiatanmu!',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: kTextHeader,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // --- UI: BOTTOM SHEET FORM ---
   void _showForm(BuildContext context, {int? index}) {
     bool isEditing = index != null;
     if (isEditing) {
@@ -212,7 +238,6 @@ class _TodoListPageState extends State<TodoListPage> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Handle bar kecil di tengah atas
               Center(
                 child: Container(
                   width: 40,
@@ -224,7 +249,6 @@ class _TodoListPageState extends State<TodoListPage> {
                 ),
               ),
               const SizedBox(height: 20),
-              // Header di dalam sheet
               Center(
                 child: Column(
                   children: const [
@@ -239,13 +263,12 @@ class _TodoListPageState extends State<TodoListPage> {
                 ),
               ),
               const SizedBox(height: 30),
-              // Input Judul dengan style underline
               const Text('Judul',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
               TextField(
                 controller: titleController,
                 decoration: const InputDecoration(
-                  hintText: 'Masukkan tugas',
+                  hintText: 'Masukan tugas',
                   hintStyle: TextStyle(color: Colors.black26),
                   border: UnderlineInputBorder(),
                   enabledBorder: UnderlineInputBorder(
@@ -257,13 +280,12 @@ class _TodoListPageState extends State<TodoListPage> {
                 ),
               ),
               const SizedBox(height: 25),
-              // Input Deskripsi dengan style underline
               const Text('Deskripsi',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
               TextField(
                 controller: descController,
                 decoration: const InputDecoration(
-                  hintText: 'Masukkan deskripsi tugas',
+                  hintText: 'Masukan deskripsi tugas',
                   hintStyle: TextStyle(color: Colors.black26),
                   border: UnderlineInputBorder(),
                   enabledBorder: UnderlineInputBorder(
@@ -275,7 +297,6 @@ class _TodoListPageState extends State<TodoListPage> {
                 ),
               ),
               const SizedBox(height: 35),
-              // Tombol Simpan di kanan bawah
               Align(
                 alignment: Alignment.centerRight,
                 child: ElevatedButton(
@@ -302,7 +323,7 @@ class _TodoListPageState extends State<TodoListPage> {
     );
   }
 
-  // --- UI: WIDGET ITEM TUGAS (REDESAIN SESUAI GAMBAR 3 & 6) ---
+  // --- UI: WIDGET ITEM TUGAS ---
   Widget _buildTaskItem(Todo task, int index) {
     bool isCompleted = task.isDone;
     return Container(
@@ -367,7 +388,6 @@ class _TodoListPageState extends State<TodoListPage> {
     final completedTodos = todos.where((todo) => todo.isDone).toList();
 
     return Scaffold(
-      // Tidak pakai AppBar standar
       body: SafeArea(
         child: _isLoading
             ? const Center(child: CircularProgressIndicator())
@@ -375,72 +395,48 @@ class _TodoListPageState extends State<TodoListPage> {
                 children: [
                   _buildCustomHeader(),
                   Expanded(
-                    child: todos.isEmpty
-                        // Tampilan Kosong (Empty State) - Gambar 1 & 4
-                        ? Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              // CATATAN PENTING: Hapus 'const' di depan tanda kurung siku [ ] ini
-                              children: [
-                                // --- BAGIAN YANG DIUBAH ---
-                                // Menggunakan gambar dari folder assets
-                                Image.asset(
-                                  'assets/notes.png',
-                                  width: 280, // Atur ukuran sesuai keinginan (di desain terlihat agak besar)
-                                  fit: BoxFit.contain,
-                                ),
-                                // ---------------------------
-
-                                const SizedBox(height: 20), // Tambahkan const di sini
-                                const Text( // Tambahkan const di sini
-                                  'Ayo tulis\nkegiatan mu!',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: kTextHeader,
-                                  ),
-                                ),
-                                const SizedBox(height: 100), // Tambahkan const di sini
-                              ],
-                            ),
+                    // LOGIKA TAMPILAN UTAMA DIUBAH DISINI
+                    child: ListView(
+                      padding: const EdgeInsets.only(bottom: 80),
+                      children: [
+                        // --- BAGIAN 1: TUGAS AKTIF ATAU EMPTY STATE ---
+                        if (activeTodos.isEmpty)
+                          // Jika tidak ada tugas aktif, tampilkan ilustrasi
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 40.0),
+                            child: _buildEmptyStateWidget(),
                           )
-                        // Tampilan Daftar Tugas - Gambar 3 & 6
-                        : ListView(
-                            padding: const EdgeInsets.only(bottom: 80),
-                            children: [
-                              // Daftar Tugas Aktif
-                              ...activeTodos.map((task) {
-                                int index = todos.indexOf(task);
-                                return _buildTaskItem(task, index);
-                              }).toList(),
+                        else
+                          // Jika ada tugas aktif, tampilkan daftarnya
+                          ...activeTodos.map((task) {
+                            int index = todos.indexOf(task);
+                            return _buildTaskItem(task, index);
+                          }).toList(),
 
-                              // Bagian "Selesai" jika ada tugas selesai
-                              if (completedTodos.isNotEmpty) ...[
-                                Padding(
-                                  padding: const EdgeInsets.fromLTRB(
-                                      25, 20, 25, 10),
-                                  child: Text(
-                                    'Selesai',
-                                    style: TextStyle(
-                                      color: kPrimaryGreen,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                ),
-                                ...completedTodos.map((task) {
-                                  int index = todos.indexOf(task);
-                                  return _buildTaskItem(task, index);
-                                }).toList(),
-                              ],
-                            ],
+                        // --- BAGIAN 2: TUGAS SELESAI (Selalu muncul jika ada datanya) ---
+                        if (completedTodos.isNotEmpty) ...[
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(25, 30, 25, 10),
+                            child: Text(
+                              'Selesai',
+                              style: TextStyle(
+                                color: kPrimaryGreen,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
                           ),
+                          ...completedTodos.map((task) {
+                            int index = todos.indexOf(task);
+                            return _buildTaskItem(task, index);
+                          }).toList(),
+                        ],
+                      ],
+                    ),
                   ),
                 ],
               ),
       ),
-      // FAB Kotak Membulat (Gambar 1)
       floatingActionButton: SizedBox(
         width: 60,
         height: 60,
