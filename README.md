@@ -26,7 +26,7 @@ Aplikasi ini didesain sesuai dengan *mockup* Figma dengan nuansa warna Earthy & 
 |:----------------------:|:-----------------:|:------------:|
 | ![Empty State](assets/home.png) | ![Form Input](assets/isi.png) | ![Task List](assets/selesai.png) |
 
-> *Catatan: Screenshot di atas hanyalah placeholder. Silakan ganti dengan screenshot asli aplikasi Anda.*
+
 
 ## 🛠️ Teknologi yang Digunakan
 
